@@ -1,18 +1,8 @@
 version: '2'
 services:
-  blog:
-    image: xx
-    restart: "no"
-    container_name: blog
-    networks:
-      default:
-        ipv4_address: 10.2.10.10
-    environment:
-      - NAME=BLOG
-
   wordpress:
     image: wordpress
-    container_name: wordpressN
+    container_name: wordpress
     environment:
       WORDPRESS_DB_HOST: mysql
       WORDPRESS_DB_NAME: wordpress
@@ -39,7 +29,8 @@ services:
         ipv4_address: 10.2.10.17
 
   nodejs:
-    image: xx
+    build:
+      context: ./nodejs
     restart: "no"
     container_name: nodejs
     networks:
@@ -47,15 +38,15 @@ services:
         ipv4_address: 10.2.10.20
     environment:
       - NAME=NODEJS
+
   nginx:
-    image: xx
+    build:
+      context: ./nginx
     restart: "no"
     container_name: nginx
     networks:
       default:
         ipv4_address: 10.2.10.30
-    environment:
-      - NAME=NGINX
 
   proxy:
     image: haproxy:1.5
