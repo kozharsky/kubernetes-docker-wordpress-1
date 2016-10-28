@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: xxxx-service
+  labels:
+    app: xxxx
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: xxxx
+    tier: frontend
+  type: LoadBalancer
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: xxxx
+  labels:
+    app: xxxx
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: xxxx
+        tier: frontend
+    spec:
+      containers:
+      - image: nginx:1.11.5
+        name: xxxx
+        ports:
+        - containerPort: 80
+          name: xxxx
