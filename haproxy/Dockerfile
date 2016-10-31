@@ -1,7 +1,5 @@
-FROM nginx:1.11.5
+FROM haproxy:1.5
 
-COPY static /usr/share/nginx/html
+COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
-EXPOSE 80 443
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]

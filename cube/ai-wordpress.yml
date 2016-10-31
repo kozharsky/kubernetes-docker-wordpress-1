@@ -9,8 +9,7 @@ spec:
     - port: 80
   selector:
     app: wordpress
-    tier: frontend
-  type: LoadBalancer
+  clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
