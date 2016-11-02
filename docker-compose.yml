@@ -1,7 +1,8 @@
 version: '2'
 services:
   wordpress:
-    image: wordpress
+    build:
+      context: ./wordpress
     container_name: wordpress
     environment:
       WORDPRESS_DB_HOST: mysql
@@ -10,6 +11,8 @@ services:
       WORDPRESS_DB_PASSWORD: password
     depends_on:
       - mysql
+    ports:
+       - "8181:80"
     networks:
       default:
         ipv4_address: 10.2.10.15
@@ -22,8 +25,6 @@ services:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: password
-    volumes:
-      - ./mysql:/var/lib/mysql
     networks:
       default:
         ipv4_address: 10.2.10.17
@@ -49,14 +50,16 @@ services:
         ipv4_address: 10.2.10.30
 
   proxy:
-    image: haproxy:1.5
+    build:
+      context: ./proxy
     restart: "no"
     container_name: proxy
-    volumes:
-      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     networks:
       default:
         ipv4_address: 10.2.10.100
+    ports:
+       - "9000:9000"
+       - "80:80"
     depends_on:
       - wordpress
 

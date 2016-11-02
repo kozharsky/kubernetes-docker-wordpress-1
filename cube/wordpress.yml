@@ -27,7 +27,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: wordpress:4.4-apache
+      - image: kopachevsky/wordpress
         name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
@@ -43,9 +43,9 @@ spec:
           name: wordpress
         volumeMounts:
         - name: wordpress-persistent-storage
-          mountPath: /var/www/html
+          mountPath: /var/www/html/blog
       volumes:
       - name: wordpress-persistent-storage
         awsElasticBlockStore:
-          volumeID: vol-ace00913
+          volumeID: vol-007b91bf
           fsType: ext4
