@@ -7,6 +7,7 @@
 create_volume_from_snapshot() {
     local snapshot_id=$1
     local volume_size=$2
+    local name=$3
     CREATE_SNAPSHOT_RESPONSE=$(aws ec2 create-volume --size ${volume_size} --volume-type gp2 --availability-zone us-west-1a --snapshot-id=${snapshot_id})
     echo "response ${CREATE_SNAPSHOT_RESPONSE}"
     checkme='\"VolumeId\": "(vol-[a-z0-9A-Z]*)"'
@@ -14,6 +15,7 @@ create_volume_from_snapshot() {
       local VOLUME_ID=${BASH_REMATCH[1]}
       echo "Create Volume with id='${VOLUME_ID}'"
       create_volume_from_snapshot_RESULT=$VOLUME_ID
+      CREATE_TAGS=$(aws ec2 create-tags --resources ${VOLUME_ID} --tags Key=Name,Value=${name})
     else
       echo "Error during create volume operation for response"
       echo $resonse
@@ -49,8 +51,8 @@ done
 ## INTIALIZAITION
 ################################################################
 
-MYSQL_EBS_SNAPSHOT_ID=snap-22caaea1
-WP_EBS_SHAPSHOT_ID=snap-7d41b2fe
+MYSQL_EBS_SNAPSHOT_ID=snap-313058b3
+WP_EBS_SHAPSHOT_ID=snap-30694eb3
 
 if [ -d "$STACK_NAME" ]; then
    if [ $FORCE == 0 ]; then
@@ -70,10 +72,10 @@ mkdir $STACK_NAME
 ## CREATE WP AND MYSQL VOLUMES FROM SNAPTHOTS
 ################################################################
 
-create_volume_from_snapshot $MYSQL_EBS_SNAPSHOT_ID 5
-MYSQL_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT
+create_volume_from_snapshot $MYSQL_EBS_SNAPSHOT_ID 5 "${STACK_NAME}-mysql"
+MYSQL_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT 
 
-create_volume_from_snapshot $WP_EBS_SHAPSHOT_ID 5
+create_volume_from_snapshot $WP_EBS_SHAPSHOT_ID 2 "${STACK_NAME}-wp"
 WP_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT
 
 

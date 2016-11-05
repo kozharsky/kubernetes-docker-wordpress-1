@@ -1,33 +1,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mystack-mysql
+  name: fresh-mysql
   labels:
-    app: mystack-mysql
+    app: fresh-mysql
 spec:
   ports:
     - port: 3306
   selector:
-    app: mystack-mysql
+    app: fresh-mysql
   clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: mystack-mysql
+  name: fresh-mysql
   labels:
-    app: mystack-mysql
+    app: fresh-mysql
 spec:
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mystack-mysql
+        app: fresh-mysql
     spec:
       containers:
       - image: mysql:5.6
-        name: mystack-mysql
+        name: fresh-mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: "my-secret-pw"
@@ -40,10 +40,10 @@ spec:
         ports:
         - containerPort: 3306
         volumeMounts:
-        - name: mystack-mysql-volume
+        - name: fresh-mysql-volume
           mountPath: /var/lib/mysql
       volumes:
-      - name: mystack-mysql-volume
+      - name: fresh-mysql-volume
         awsElasticBlockStore:
-          volumeID: vol-c438ce7b
+          volumeID: vol-7c39cfc3
           fsType: ext4
