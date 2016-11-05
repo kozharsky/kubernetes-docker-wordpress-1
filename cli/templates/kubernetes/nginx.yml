@@ -1,34 +1,32 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodejs
+  name: %STACK_NAME%-nginx
   labels:
-    app: nodejs
+    app: %STACK_NAME%-nginx
 spec:
   ports:
-    - port: 8080
+    - port: 80
   selector:
-    app: nodejs
-  clusterIP: None
+    app: %STACK_NAME%-nginx
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nodejs
+  name: %STACK_NAME%-nginx
   labels:
-    app: nodejs
+    app: %STACK_NAME%-nginx
 spec:
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: nodejs
+        app: %STACK_NAME%-nginx
         tier: frontend
     spec:
       containers:
-      - image: kopachevsky/ai-nodejs
-        name: nodejs
+      - image: kopachevsky/ai-nginx
+        name: %STACK_NAME%-nginx
         ports:
-        - containerPort: 8080
-          name: nodejs
+        - containerPort: 80

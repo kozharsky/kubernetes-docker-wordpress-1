@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: %STACK_NAME%-haproxy
+  labels:
+    app: %STACK_NAME%-haproxy
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: %STACK_NAME%-haproxy
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: %STACK_NAME%-haproxy
+  labels:
+    app: %STACK_NAME%-haproxy
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: %STACK_NAME%-haproxy
+    spec:
+      containers:
+      - image: kopachevsky/ai-haproxy
+        name: %STACK_NAME%-haproxy
+        ports:
+        - containerPort: 80

@@ -1,33 +1,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ai-mysql
+  name: %STACK_NAME%-mysql
   labels:
-    app: ai-mysql
+    app: %STACK_NAME%-mysql
 spec:
   ports:
     - port: 3306
   selector:
-    app: ai-mysql
+    app: %STACK_NAME%-mysql
   clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ai-mysql-mysql
+  name: %STACK_NAME%-mysql
   labels:
-    app: ai-mysql
+    app: %STACK_NAME%-mysql
 spec:
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: ai-mysql
+        app: %STACK_NAME%-mysql
     spec:
       containers:
       - image: mysql:5.6
-        name: ai-mysql
+        name: %STACK_NAME%-mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: "my-secret-pw"
@@ -39,12 +39,11 @@ spec:
           value: "password"
         ports:
         - containerPort: 3306
-          name: ai-mysql
         volumeMounts:
-        - name: mysql-persistent-storage
+        - name: %STACK_NAME%-mysql-volume
           mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-persistent-storage
+      - name: %STACK_NAME%-mysql-volume
         awsElasticBlockStore:
-          volumeID: vol-83e0093c
+          volumeID: %MYSQL_EBS_VOLUME_ID%
           fsType: ext4
