@@ -30,3 +30,11 @@ spec:
         name: %STACK_NAME%-haproxy
         ports:
         - containerPort: 80
+        env:
+        - name: WORDPRESS_ENDPOINT
+          value: "%STACK_NAME%-wordpress"
+        - name: NGINX_ENDPOINT
+          value: "%STACK_NAME%-nginx"
+        - name: NODEJS_ENDPOINT
+          value: "%STACK_NAME%-nodejs"
+

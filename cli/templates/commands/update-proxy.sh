@@ -1,1 +1,1 @@
-kubectl set image deployment/haproxy haproxy=kopachevsky/ai-haproxy:1.0.1
+kubectl set image deployment/fresh-haproxy fresh-haproxy=kopachevsky/ai-haproxy:latest
