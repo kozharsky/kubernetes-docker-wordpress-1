@@ -51,8 +51,8 @@ done
 ## INTIALIZAITION
 ################################################################
 
-MYSQL_EBS_SNAPSHOT_ID=snap-313058b3
-WP_EBS_SHAPSHOT_ID=snap-30694eb3
+#MYSQL_EBS_SNAPSHOT_ID=snap-313058b3
+#WP_EBS_SHAPSHOT_ID=snap-30694eb3
 
 if [ -d "$STACK_NAME" ]; then
    if [ $FORCE == 0 ]; then
