@@ -49,11 +49,11 @@ services:
       default:
         ipv4_address: 10.2.10.30
 
-  proxy:
+  haproxy:
     build:
       context: ./haproxy
     restart: "no"
-    container_name: proxy
+    container_name: haproxy
     networks:
       default:
         ipv4_address: 10.2.10.100
@@ -62,6 +62,8 @@ services:
        - "80:80"
     environment:
       NGINX_ENDPOINT: nginx
+      WORDPRESS_ENDPOINT: wordpress
+      NODEJS_ENDPOINT: nodejs
 
 networks:
   default:

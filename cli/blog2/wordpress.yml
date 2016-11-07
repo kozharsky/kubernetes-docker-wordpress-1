@@ -1,37 +1,37 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress
+  name: blog2-wordpress
   labels:
-    app: wordpress
+    app: blog2-wordpress
 spec:
   ports:
     - port: 80
   selector:
-    app: wordpress
+    app: blog2-wordpress
   clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: wordpress
+  name: blog2-wordpress
   labels:
-    app: wordpress
+    app: blog2-wordpress
 spec:
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: wordpress
+        app: blog2-wordpress
         tier: frontend
     spec:
       containers:
       - image: kopachevsky/wordpress
-        name: wordpress
+        name: blog2-wordpress
         env:
         - name: WORDPRESS_DB_HOST
-          value: ai-mysql
+          value: "blog2-mysql"
         - name: WORDPRESS_DB_NAME
           value: "wordpress"
         - name: WORDPRESS_DB_USER
@@ -40,12 +40,11 @@ spec:
           value: "password"
         ports:
         - containerPort: 80
-          name: wordpress
         volumeMounts:
-        - name: wordpress-persistent-storage
+        - name: blog2-wordpress-volume
           mountPath: /var/www/html/blog
       volumes:
-      - name: wordpress-persistent-storage
+      - name: blog2-wordpress-volume
         awsElasticBlockStore:
-          volumeID: vol-007b91bf
+          volumeID: vol-cf887870
           fsType: ext4

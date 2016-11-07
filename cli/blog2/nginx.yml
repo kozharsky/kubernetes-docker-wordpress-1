@@ -1,34 +1,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: blog2-nginx
   labels:
-    app: nginx
+    app: blog2-nginx
 spec:
   ports:
     - port: 80
   selector:
-    app: nginx
-  clusterIP: 10.244.0.29
+    app: blog2-nginx
+  clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nginx
+  name: blog2-nginx
   labels:
-    app: nginx
+    app: blog2-nginx
 spec:
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: nginx
+        app: blog2-nginx
         tier: frontend
     spec:
       containers:
       - image: kopachevsky/ai-nginx
-        name: nginx
+        name: blog2-nginx
         ports:
         - containerPort: 80
-          name: nginx

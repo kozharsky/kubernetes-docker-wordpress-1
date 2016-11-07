@@ -20,19 +20,12 @@ frontend http-in
     use_backend nodejs if acl_ex
     use_backend nodejs if acl_new
 
+
 backend default
-    server nginx nginx:80 cookie nginx
+    server %NGINX_ENDPOINT% %NGINX_ENDPOINT%:80" cookie nginx
 
 backend wordpress
-    server wordpress wordpress:80 cookie wordpress
+    server %WORDPRESS_ENDPOINT% %WORDPRESS_ENDPOINT%:80 cookie wordpress
 
 backend nodejs
-    server nodejs nodejs:8080 cookie nodejs
-
-listen stats :9000 #Listen on localhost port 9000
-    mode http
-    stats enable 
-    stats hide-version 
-    stats realm Haproxy\ Statistics #Show this text in authentication popup (escape space characters with backslash)
-    stats uri /haproxy_stats #The URI of the stats page, in this case localhost:9000/haproxy_stats
-    stats auth Username:Password #Set a username and password
+    server %NODEJS_ENDPOINT% %NODEJS_ENDPOINT%:8080 cookie nodejs

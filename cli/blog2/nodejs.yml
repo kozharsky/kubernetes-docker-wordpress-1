@@ -1,34 +1,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodejs
+  name: blog2-nodejs
   labels:
-    app: nodejs
+    app: blog2-nodejs
 spec:
   ports:
     - port: 8080
   selector:
-    app: nodejs
+    app: blog2-nodejs
   clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nodejs
+  name: blog2-nodejs
   labels:
-    app: nodejs
+    app: blog2-nodejs
 spec:
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: nodejs
+        app: blog2-nodejs
         tier: frontend
     spec:
       containers:
       - image: kopachevsky/ai-nodejs
-        name: nodejs
+        name: blog2-nodejs
         ports:
         - containerPort: 8080
-          name: nodejs
