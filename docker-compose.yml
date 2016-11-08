@@ -2,7 +2,7 @@ version: '2'
 services:
   wordpress:
     build:
-      context: ./wordpress
+      context: ../docker-images/wordpress
     container_name: wordpress
     environment:
       WORDPRESS_DB_HOST: mysql
@@ -31,7 +31,7 @@ services:
 
   nodejs:
     build:
-      context: ./nodejs
+      context: ../docker-images/nodejs
     restart: "no"
     container_name: nodejs
     networks:
@@ -42,7 +42,7 @@ services:
 
   nginx:
     build:
-      context: ./nginx
+      context: ../docker-images/nginx
     restart: "no"
     container_name: nginx
     networks:
@@ -51,7 +51,7 @@ services:
 
   haproxy:
     build:
-      context: ./haproxy
+      context: ../docker-images/haproxy
     restart: "no"
     container_name: haproxy
     networks:

@@ -27,7 +27,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: kopachevsky/ai-nginx
+      - image: %ECR_REPO%/nginx:latest
         name: %STACK_NAME%-nginx
         ports:
         - containerPort: 80

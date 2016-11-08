@@ -26,7 +26,7 @@ spec:
         app: %STACK_NAME%-haproxy
     spec:
       containers:
-      - image: kopachevsky/ai-haproxy
+      - image: %ECR_REPO%/haproxy:latest
         name: %STACK_NAME%-haproxy
         ports:
         - containerPort: 80

@@ -72,10 +72,10 @@ mkdir $STACK_NAME
 ## CREATE WP AND MYSQL VOLUMES FROM SNAPTHOTS
 ################################################################
 
-create_volume_from_snapshot $MYSQL_EBS_SNAPSHOT_ID 5 "${STACK_NAME}-mysql"
+create_volume_from_snapshot $MYSQL_EBS_SNAPSHOT_ID "${MYSQL_EBS_SIZE}" "${STACK_NAME}-mysql"
 MYSQL_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT 
 
-create_volume_from_snapshot $WP_EBS_SHAPSHOT_ID 2 "${STACK_NAME}-wp"
+create_volume_from_snapshot $WP_EBS_SHAPSHOT_ID "${WP_EBS_SIZE}" "${STACK_NAME}-wp"
 WP_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT
 
 
@@ -84,9 +84,9 @@ echo "Created volumes for mysql ${MYSQL_EBS_VOLUME_ID} and wp ${WP_EBS_VOLUME_ID
 
 
 arr_files=( $(ls templates/kubernetes) )
-for i in ${arr_files[@]}
+for i in 
 do 
-    sed -e 's/%MYSQL_EBS_VOLUME_ID%/'${MYSQL_EBS_VOLUME_ID}'/g' -e 's/%WP_EBS_VOLUME_ID%/'${WP_EBS_VOLUME_ID}'/g' -e 's/%STACK_NAME%/'${STACK_NAME}'/g' ./templates/kubernetes/$i > ./$STACK_NAME/$i
+    sed -e 's/%ECR_REPO%/'${ECR_REPO}'/g' -e 's/%MYSQL_EBS_VOLUME_ID%/'${MYSQL_EBS_VOLUME_ID}'/g' -e 's/%WP_EBS_VOLUME_ID%/'${WP_EBS_VOLUME_ID}'/g' -e 's/%STACK_NAME%/'${STACK_NAME}'/g' ./templates/kubernetes/$i > ./$STACK_NAME/$i
 done
 
 

@@ -27,7 +27,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: kopachevsky/ai-nodejs
+      - image: %ECR_REPO%/nodejs:latest
         name: %STACK_NAME%-nodejs
         ports:
         - containerPort: 8080
