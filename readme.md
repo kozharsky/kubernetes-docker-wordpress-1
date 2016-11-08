@@ -41,7 +41,8 @@ This will give you good start for experiemnts
 
 1. cd to project_root/docker_images
 2. run ./build-all.sh
-3. run ECR_REPO='11112222.dkr.ecr.us-west-1.amazonaws.com' ./push-all.sh, where ECR_REPO is base url you've noted at 'Create Container Registry Repository' steps
+3. run 
+``` bash ECR_REPO='11112222.dkr.ecr.us-west-1.amazonaws.com' ./push-all.sh ```, where ECR_REPO is base url you've noted at 'Create Container Registry Repository' steps
 
 after that all images will be builded and pushed to AWS ECR registry, so kubernetes will be able to upload them when you've create your first stack.
 
