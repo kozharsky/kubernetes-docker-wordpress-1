@@ -141,9 +141,15 @@ Click on it to see your HAProxy landing page.
 To update those settings, you have to connect to mysql database and do update.
 
 1. First need to find pod name, do kubectl get pods and find STACK-NAME-mysql-.... in a list for example "blog2-mysql-3322672421-4upkd"
-1. connect to db using ```bash  kubectl exec -ti blog2-mysql-3322672421-4upkd  -- mysql -u %USERNAME% -ppassword %PASSOWRD% ```
-1. good idea would be to backup prev values ```bash select option_value from wp_options where option_name = 'siteurl';
-select option_value from wp_options where option_name = 'home';```
-1. update settings ```bash update  wp_options set option_value = 'http://YOUR_DOMAIN/blog' where option_name in ('siteurl');
+1. connect to db using ```bash  
+kubectl exec -ti blog2-mysql-3322672421-4upkd  -- mysql -u %USERNAME% -ppassword %PASSOWRD% 
+```
+1. good idea would be to backup prev values 
+```bash select option_value from wp_options where option_name = 'siteurl';
+select option_value from wp_options where option_name = 'home';
+```
+1. update settings 
+```bash 
+update  wp_options set option_value = 'http://YOUR_DOMAIN/blog' where option_name in ('siteurl');
 update  wp_options set option_value = 'http://YOUR_DOMAIN/blog' where option_name in ('home');
 ```
