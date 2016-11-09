@@ -8,7 +8,7 @@ create_volume_from_snapshot() {
     local snapshot_id=$1
     local volume_size=$2
     local name=$3
-    CREATE_SNAPSHOT_RESPONSE=$(aws ec2 create-volume --size ${volume_size} --volume-type gp2 --availability-zone us-west-1a --snapshot-id=${snapshot_id})
+    CREATE_SNAPSHOT_RESPONSE=$(aws ec2 create-volume --size ${volume_size} --volume-type gp2 --availability-zone us-east-1d --snapshot-id=${snapshot_id})
     echo "response ${CREATE_SNAPSHOT_RESPONSE}"
     checkme='\"VolumeId\": "(vol-[a-z0-9A-Z]*)"'
     if [[ $CREATE_SNAPSHOT_RESPONSE =~ $checkme ]]; then
@@ -56,7 +56,7 @@ done
 
 if [ -d "$STACK_NAME" ]; then
    if [ $FORCE == 0 ]; then
-      echo "Dicretory $STACK_NAME already exists"
+      echo "Directory $STACK_NAME already exists"
       exit 1
    else
       echo "Removing $STACK_NAME directory as long -f parameter present"

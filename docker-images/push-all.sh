@@ -2,13 +2,13 @@
 
 set -e
 
-eval $(aws ecr get-login --region us-west-1)
+eval $(aws ecr get-login --region us-east-1)
 
 for image in \
         haproxy \
         nginx \
         nodejs \
-        worpdress \
+        wordpress \
     ; do
         ECR_TAG="${ECR_REPO}/${image}:latest"
         docker tag "${image}:latest" "${ECR_TAG}"
