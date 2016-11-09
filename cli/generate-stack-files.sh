@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 ################################################################
 ## FUNCTIONS
 ################################################################
@@ -28,7 +29,7 @@ create_volume_from_snapshot() {
 ################################################################
 
 FORCE=0
-
+SKIP_VOLUME_CREATION=0
 for i in "$@"
 do
 case $i in
@@ -41,6 +42,9 @@ case $i in
     -f)
     FORCE=1
     ;;
+    --skip-volume-creation)
+    SKIP_VOLUME_CREATION=1
+    ;;
     *)
     echo "Unknown option ${i}"
     ;;
@@ -51,8 +55,15 @@ done
 ## INTIALIZAITION
 ################################################################
 
-#MYSQL_EBS_SNAPSHOT_ID=snap-313058b3
-#WP_EBS_SHAPSHOT_ID=snap-30694eb3
+SCRIPT_PATH="${BASH_SOURCE[0]}";
+if ([ -h "${SCRIPT_PATH}" ]) then
+  while([ -h "${SCRIPT_PATH}" ]) do SCRIPT_PATH=`readlink "${SCRIPT_PATH}"`; done
+fi
+pushd . > /dev/null
+cd `dirname ${SCRIPT_PATH}` > /dev/null
+SCRIPT_PATH=`pwd`;
+popd  > /dev/null
+
 
 if [ -d "$STACK_NAME" ]; then
    if [ $FORCE == 0 ]; then
@@ -72,21 +83,25 @@ mkdir $STACK_NAME
 ## CREATE WP AND MYSQL VOLUMES FROM SNAPTHOTS
 ################################################################
 
-create_volume_from_snapshot $MYSQL_EBS_SNAPSHOT_ID "${MYSQL_EBS_SIZE}" "${STACK_NAME}-mysql"
-MYSQL_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT 
+if [ $SKIP_VOLUME_CREATION == 0 ]; then
+    "Echo create volumes from shapshots"
+    create_volume_from_snapshot $MYSQL_EBS_SNAPSHOT_ID "${MYSQL_EBS_SIZE}" "${STACK_NAME}-mysql"
+    MYSQL_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT 
 
-create_volume_from_snapshot $WP_EBS_SHAPSHOT_ID "${WP_EBS_SIZE}" "${STACK_NAME}-wp"
-WP_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT
+    create_volume_from_snapshot $WP_EBS_SHAPSHOT_ID "${WP_EBS_SIZE}" "${STACK_NAME}-wp"
+    WP_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT
+else
+    "Skiping volume creation becase --skip-volume-creation flag"
+fi
 
+echo "Using volumes for mysql ${MYSQL_EBS_VOLUME_ID} and wp ${WP_EBS_VOLUME_ID}"
 
-
-echo "Created volumes for mysql ${MYSQL_EBS_VOLUME_ID} and wp ${WP_EBS_VOLUME_ID}"
-
-
-arr_files=( $(ls templates/kubernetes) )
-for i in 
+#echo "Copying files from template ${arr_files}"
+arr_files=( $(ls $SCRIPT_PATH/templates/kubernetes) )
+for i in ${arr_files[@]}
 do 
-    sed -e 's/%ECR_REPO%/'${ECR_REPO}'/g' -e 's/%MYSQL_EBS_VOLUME_ID%/'${MYSQL_EBS_VOLUME_ID}'/g' -e 's/%WP_EBS_VOLUME_ID%/'${WP_EBS_VOLUME_ID}'/g' -e 's/%STACK_NAME%/'${STACK_NAME}'/g' ./templates/kubernetes/$i > ./$STACK_NAME/$i
+    echo "Generating ./$STACK_NAME/$i"
+    sed -e 's/%ECR_REPO%/'${ECR_REPO}'/g' -e 's/%MYSQL_EBS_VOLUME_ID%/'${MYSQL_EBS_VOLUME_ID}'/g' -e 's/%WP_EBS_VOLUME_ID%/'${WP_EBS_VOLUME_ID}'/g' -e 's/%STACK_NAME%/'${STACK_NAME}'/g' $SCRIPT_PATH/templates/kubernetes/$i > ./$STACK_NAME/$i
 done
 
 
