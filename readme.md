@@ -129,7 +129,7 @@ users:
     password: <removed>
     username: admin
 ```
-In the browser go to the IP for the cluster https://<IP>/ui and user the username/password for the file to log in.
+In the browser go to the IP for the cluster https://\<IP\>/ui and user the username/password for the file to log in.
 
 Click on deployments and make sure all green. Click on services to see host name of the ELB load balancer pointing to the kubernetes minions for the cluster.
 
