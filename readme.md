@@ -138,7 +138,9 @@ Click on it to see your HAProxy landing page.
 
 ## Wordpress siteurl and home settings update
 
-To update those settings, you have to connect to mysql database and do update.
+To update those settings, you have to connect to mysql database and do an update.
+
+This is necessary if you are changing the domain name of the site.
 
 1. First need to find pod name, do kubectl get pods and find STACK-NAME-mysql-.... in a list for example "blog2-mysql-3322672421-4upkd"
 1. connect to db using 
@@ -154,4 +156,62 @@ select option_value from wp_options where option_name = 'home';
 ```sql 
 update  wp_options set option_value = 'http://YOUR_DOMAIN/blog' where option_name in ('siteurl');
 update  wp_options set option_value = 'http://YOUR_DOMAIN/blog' where option_name in ('home');
+```
+
+## Updating an image
+
+This command will update the image for a deployment which creates a new container, sends load balancer traffic to it, and then removes the old containers.
+
+`kubectl set image deployment/fresh-haproxy fresh-haproxy=kopachevsky/ai-haproxy:latest`
+
+## Adding more pods to a deployment
+
+To add another nginx for example
+
+```
+$ kubectl scale --replicas=2 deployment/bloga-nginx
+deployment "bloga-nginx" scaled
+```
+
+If you have limits on the CPU that pods can use you could eventually see this error in dashboard/logs (the command won't tell you right away)
+
+> pod (bloga-nginx-1109382286-cqtbs) failed to fit in any node fit failure on node (ip-172-20-0-165.ec2.internal): Insufficient cpu fit failure on node (ip-172-20-0-166.ec2.internal): Insufficient cpu
+
+Run this command to see the limits in place
+
+`kubectl describe nodes`
+
+To fix: TBD
+
+See [Kubernetes scale docs](
+http://kubernetes.io/docs/user-guide/kubectl/kubectl_scale/)
+
+## Troubleshooting Kubernetes Pods
+
+If you are seeing errors or strange behavior or restarts in your pods you can check the logs of the pods and even the previous pods that kubernetes may have shut down.
+
+```
+$ kubectl get pods
+NAME                               READY     STATUS    RESTARTS   AGE
+bloga-haproxy-1941255181-24n1u     1/1       Running   4          2h
+bloga-mysql-1941698713-kgfus       1/1       Running   0          2h
+bloga-nginx-1109382286-1jvn8       1/1       Running   0          2h
+bloga-nodejs-1141233171-fmbsr      1/1       Running   0          2h
+bloga-wordpress-1060378877-7c926   1/1       Running   0          2h
+
+$ kubectl get deployments
+NAME              DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+bloga-haproxy     1         1         1            1           2h
+bloga-mysql       1         1         1            1           2h
+bloga-nginx       1         1         1            1           2h
+bloga-nodejs      1         1         1            1           2h
+bloga-wordpress   1         1         1            1           2h
+
+$ kubectl logs bloga-haproxy-1941255181-24n1u bloga-haproxy
+
+$ kubectl logs --previous bloga-haproxy-1941255181-24n1u bloga-haproxy
+[ALERT] 313/101906 (6) : parsing [/usr/local/etc/haproxy/haproxy.cfg:28] : 'server bloga-wordpress' : invalid address: 'bloga-wordpress' in 'bloga-wordpress:80'
+
+[ALERT] 313/101906 (6) : Error(s) found in configuration file : /usr/local/etc/haproxy/haproxy.cfg
+[ALERT] 313/101906 (6) : Fatal errors found in configuration.
 ```
