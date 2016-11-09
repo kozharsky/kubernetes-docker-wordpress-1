@@ -84,11 +84,11 @@ mkdir $STACK_NAME
 ################################################################
 
 if [ $SKIP_VOLUME_CREATION == 0 ]; then
-    "Echo create volumes from shapshots"
+    "Echo create volumes from snapshots"
     create_volume_from_snapshot $MYSQL_EBS_SNAPSHOT_ID "${MYSQL_EBS_SIZE}" "${STACK_NAME}-mysql"
     MYSQL_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT 
 
-    create_volume_from_snapshot $WP_EBS_SHAPSHOT_ID "${WP_EBS_SIZE}" "${STACK_NAME}-wp"
+    create_volume_from_snapshot $WP_EBS_SNAPSHOT_ID "${WP_EBS_SIZE}" "${STACK_NAME}-wp"
     WP_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT
 else
     "Skiping volume creation becase --skip-volume-creation flag"
