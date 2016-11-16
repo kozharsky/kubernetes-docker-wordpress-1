@@ -9,7 +9,7 @@ create_volume_from_snapshot() {
     local snapshot_id=$1
     local volume_size=$2
     local name=$3
-    CREATE_SNAPSHOT_RESPONSE=$(aws ec2 create-volume --size ${volume_size} --volume-type gp2 --availability-zone us-east-1d --snapshot-id=${snapshot_id})
+    CREATE_SNAPSHOT_RESPONSE=$(aws ec2 create-volume --size ${volume_size} --volume-type gp2 --availability-zone ${AZ} --snapshot-id=${snapshot_id})
     echo "response ${CREATE_SNAPSHOT_RESPONSE}"
     checkme='\"VolumeId\": "(vol-[a-z0-9A-Z]*)"'
     if [[ $CREATE_SNAPSHOT_RESPONSE =~ $checkme ]]; then
@@ -84,7 +84,7 @@ mkdir $STACK_NAME
 ################################################################
 
 if [ $SKIP_VOLUME_CREATION == 0 ]; then
-    "Echo create volumes from snapshots"
+    echo "Echo create volumes from snapshots"
     create_volume_from_snapshot $MYSQL_EBS_SNAPSHOT_ID "${MYSQL_EBS_SIZE}" "${STACK_NAME}-mysql"
     MYSQL_EBS_VOLUME_ID=$create_volume_from_snapshot_RESULT 
 
