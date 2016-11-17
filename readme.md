@@ -164,6 +164,16 @@ This command will update the image for a deployment which creates a new containe
 
 `kubectl set image deployment/fresh-haproxy fresh-haproxy=kopachevsky/ai-haproxy:latest`
 
+Alternativelly after update any image inside docker-images folder, suppose nginx, run
+
+```bash
+cd docker-images
+
+export ECR_REPO=11112222.dkr.ecr.us-west-1.amazonaws.com
+./build-and-deploy.sh --version=1.2 --stack-name=bloga --pod=nginx
+```
+This command will build ./nginx folder, push it to regsitry, update version to 1.2
+
 ## Adding more pods to a deployment
 
 To add another nginx for example
