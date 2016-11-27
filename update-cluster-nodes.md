@@ -37,7 +37,26 @@ Now we can create new configuration
 1. Click on autscalling group, in details below click "Edit"
 2. Change launch config to new 
 3. Increase on 50% number of instances in group ![](http://image.prntscr.com/image/f5ffe78230c84d94beade2330d4f8329.png)
-4. go to command line and check if new nodes started with 
+
+
+## Migrate all pods to new nodes
+
+1. go to command line and check if new nodes started with command
 ```
 kubectl get nodes
 ```
+2. Get old nodes by Age !{}(http://image.prntscr.com/image/c9a18ce9942b4964862e9e94bb988c0b.png)
+2. Mark each of old nodes (you can check if node old by AGE) as drain (maitenance)
+```
+kubectl drain ip-172-20-0-32.us-west-2.compute.internal --grace-period=180 --delete-local-data --force
+```
+3. Wait 5 min and check pods status, they all should be in Running state (means they all was discributed to new nodes.
+
+
+### Remove old nodes
+
+1. Go to EC2->AutoScalling Groups, click on minions autoscalling group, select Instances tab below http://image.prntscr.com/image/3cfe2ea73b604a3896635750eafe7364.png
+2. Click on each old with old configuration and terminate 
+3. Edit autoscalling group and set initial number of instances.
+
+
