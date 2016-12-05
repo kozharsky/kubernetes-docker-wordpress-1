@@ -9,7 +9,6 @@ spec:
     - port: 80
   selector:
     app: %STACK_NAME%-nginx
-  clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

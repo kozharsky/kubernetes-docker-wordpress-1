@@ -9,7 +9,6 @@ spec:
     - port: 8080
   selector:
     app: %STACK_NAME%-nodejs
-  clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

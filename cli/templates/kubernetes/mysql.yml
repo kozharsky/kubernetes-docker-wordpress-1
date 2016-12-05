@@ -9,7 +9,6 @@ spec:
     - port: 3306
   selector:
     app: %STACK_NAME%-mysql
-  clusterIP: None
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
