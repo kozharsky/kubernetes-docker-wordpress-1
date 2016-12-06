@@ -6,11 +6,11 @@ In Jenkins should install all standart plugins and "Build Authorization Token Ro
 
 2 Step
 Next step depends on how kubernetes claster has been installed
-If You used "export KUBERNETES_PROVIDER=aws; curl -sS https://get.k8s.io | bash" on Jenkins machine
-You need to add kubectl to the PATH using command "export PATH=<path/to/kubernetes-directory>/platforms/linux/amd64:$PATH"
+If You used ```export KUBERNETES_PROVIDER=aws; curl -sS https://get.k8s.io | bash``` on Jenkins machine
+You need to add kubectl to the PATH using command ```export PATH=<path/to/kubernetes-directory>/platforms/linux/amd64:$PATH```
 
 If kubernetes has been installed from another machine You should install kuberctl using next commands 
-curl -O https://storage.googleapis.com/kubernetes-release/release/v1.4.3/bin/linux/amd64/kubectl
+```curl -O https://storage.googleapis.com/kubernetes-release/release/v1.4.3/bin/linux/amd64/kubectl``` 
 chmod +x kubectl
 mv kubectl /usr/local/bin/
 
