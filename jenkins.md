@@ -2,11 +2,13 @@ Jenkins configuration
 
 1 Step
 
+
 Install Java and Jenkins
 
 In Jenkins should install all standart plugins and "Build Authorization Token Root Plugin" (it uses in automaticall deploy)
 
 2 Step
+
 
 Next step depends on how kubernetes claster has been installed
 
@@ -24,6 +26,7 @@ ans set permisions ```sudo chown jenkins /var/config```
 
 
 3 Step
+
 
 Jenkin tuning
 
