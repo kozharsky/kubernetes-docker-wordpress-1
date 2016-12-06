@@ -11,8 +11,8 @@ You need to add kubectl to the PATH using command ```export PATH=<path/to/kubern
 
 If kubernetes has been installed from another machine You should install kuberctl using next commands 
 ```curl -O https://storage.googleapis.com/kubernetes-release/release/v1.4.3/bin/linux/amd64/kubectl``` 
-chmod +x kubectl
-mv kubectl /usr/local/bin/
+```chmod +x kubectl```
+```mv kubectl /usr/local/bin/```
 
 and copy a config file from ~/.kube/config in directory where Jenkins will be able to read it(for example /var)
 ans set permisions "sudo chown jenkins /var/config"
